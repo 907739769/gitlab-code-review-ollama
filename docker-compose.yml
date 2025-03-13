@@ -1,0 +1,14 @@
+version: "3"
+services:
+  app:
+    container_name: gitlab-code-review-ollama
+    image: 'jacksaoding/gitlab-code-review-ollama:latest'
+    network_mode: "host"
+    environment:
+      TZ: Asia/Shanghai
+      apiGitlabUrl: http://xxxx/api/v4
+      apiGitlabToken: xxx
+      apiOllamaUrl: http://xxxx:11434
+      apiOllamaModel: qwen2.5-coder:32b
+    volumes:
+      - ./log:/log

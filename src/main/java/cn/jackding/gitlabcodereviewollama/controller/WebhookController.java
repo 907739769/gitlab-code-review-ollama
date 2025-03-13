@@ -22,7 +22,7 @@ public class WebhookController {
 
     @PostMapping("/gitlab")
     public ResponseEntity<String> handleGitLabWebhook(@RequestBody JSONObject webhookPayload) {
-        log.debug("webhookPayload: " + webhookPayload.toJSONString());
+        log.info("webhookPayload: " + webhookPayload.toJSONString());
         try {
             // 检查事件类型是否为 Merge Request Event
             String eventType = webhookPayload.getString("object_kind");

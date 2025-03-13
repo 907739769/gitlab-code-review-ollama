@@ -22,6 +22,7 @@ public class WebhookController {
 
     @PostMapping("/gitlab")
     public ResponseEntity<String> handleGitLabWebhook(@RequestBody JSONObject webhookPayload) {
+        log.debug("webhookPayload: " + webhookPayload.toJSONString());
         try {
             // 检查事件类型是否为 Merge Request Event
             String eventType = webhookPayload.getString("object_kind");
@@ -32,7 +33,7 @@ public class WebhookController {
                 // 只对打开状态的 PR 进行处理
                 if ("open".equals(action) || "reopen".equals(action)) {
                     String projectId = String.valueOf(webhookPayload.getJSONObject("project").getLong("id"));
-                    String prId = String.valueOf(webhookPayload.getLong("object_attributes.id"));
+                    String prId = String.valueOf(webhookPayload.getJSONObject("object_attributes").getLong("id"));
 
                     // 异步处理代码检查
                     handlePrCheckAsync(projectId, prId);

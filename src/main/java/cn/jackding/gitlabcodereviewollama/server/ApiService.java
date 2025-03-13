@@ -93,6 +93,7 @@ public class ApiService {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
             String responseBody = response.body().string();
+            log.info("responseBody: " + responseBody);
             return JSON.parseObject(responseBody);
         }
     }
@@ -102,19 +103,16 @@ public class ApiService {
         if (changes.containsKey("changes")) {
             for (Object changeObj : changes.getJSONArray("changes")) {
                 JSONObject change = (JSONObject) changeObj;
-                for (Object diffFileObj : change.getJSONArray("diffs")) {
-                    JSONObject diffFile = (JSONObject) diffFileObj;
-                    String filePath = diffFile.getString("new_path");
-                    String diffContent = diffFile.getString("diff");
+                String filePath = change.getString("new_path");
+                String diffContent = change.getString("diff");
 
-                    // 对每个文件的 diff 内容进行检查
-                    JSONObject checkResult = checkCodeWithOllama(diffContent);
-                    String result=checkResult.getString("response");
-                    String comment = "## Check result for file " + filePath + ": \n\n" + result;
+                // 对每个文件的 diff 内容进行检查
+                JSONObject checkResult = checkCodeWithOllama(diffContent);
+                String result = checkResult.getString("response");
+                String comment = "## Check result for file " + filePath + ": \n\n" + result;
 
-                    // 添加评论到 PR
-                    addCommentToPr(projectId, prId, comment);
-                }
+                // 添加评论到 PR
+                addCommentToPr(projectId, prId, comment);
             }
         }
     }

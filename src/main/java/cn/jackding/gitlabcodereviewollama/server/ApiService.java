@@ -30,7 +30,7 @@ public class ApiService {
     }
 
     public JSONObject checkCodeWithOllama(String code) throws IOException {
-        log.info("ollama code:" + code);
+        log.info("ollama checked code:" + code);
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         // 构建提示词
         String system = "您是审查代码更改的高级开发人员。" +

@@ -33,7 +33,7 @@ public class WebhookController {
                 // 只对打开状态的 PR 进行处理
                 if ("open".equals(action) || "reopen".equals(action)) {
                     String projectId = String.valueOf(webhookPayload.getJSONObject("project").getLong("id"));
-                    String prId = String.valueOf(webhookPayload.getJSONObject("object_attributes").getLong("id"));
+                    String prId = String.valueOf(webhookPayload.getJSONObject("object_attributes").getLong("iid"));
 
                     // 异步处理代码检查
                     handlePrCheckAsync(projectId, prId);

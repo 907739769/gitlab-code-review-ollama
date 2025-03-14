@@ -119,7 +119,7 @@ public class ApiService {
                 // 对每个文件的 diff 内容进行检查
                 JSONObject checkResult = checkCodeWithOllama(diffContent);
                 String result = checkResult.getString("response");
-                String comment = "## Check result for file " + filePath + ": \n\n" + result;
+                String comment = "## Check result for file " + filePath + "\n" + result;
 
                 // 添加评论到 PR
                 addCommentToPr(projectId, prId, comment);

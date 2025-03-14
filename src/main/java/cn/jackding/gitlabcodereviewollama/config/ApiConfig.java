@@ -19,4 +19,10 @@ public class ApiConfig {
     @Value("${apiOllamaModel}")
     private String ollamaModel;
 
+    @Value("${apiOllamaSystem:}")
+    private String ollamaSystem;
+
+    @Value("${apiOllamaPrompt:}")
+    private String ollamaPrompt;
+
 }

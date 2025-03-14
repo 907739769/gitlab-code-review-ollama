@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
@@ -43,12 +44,20 @@ public class ApiService {
                 "6. 潜在的安全问题，有则给出修改后的代码\n" +
                 "7. 最佳实践建议\n" +
                 "总结列出上面的问题，列成表格";
-        String prompt = "在回复中包括每个问题的简洁版本，如果没有问题则回答没有问题即可。检查以下 git diff 代码更改，重点关注结构、安全性和清晰度：\n" + code;
+        if (StringUtils.hasText(apiConfig.getOllamaSystem())) {
+            system = apiConfig.getOllamaSystem();
+        }
+        String prompt = "在回复中包括每个问题的简洁版本，如果没有问题则回答没有问题即可。检查以下 git diff 代码更改，重点关注结构、安全性和清晰度。";
+        if (StringUtils.hasText(apiConfig.getOllamaPrompt())) {
+            prompt = apiConfig.getOllamaPrompt();
+        }
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", apiConfig.getOllamaModel());
         requestBody.put("system", system);
-        requestBody.put("prompt", prompt);
+        requestBody.put("prompt", prompt + "\n" + code);
         requestBody.put("stream", false);
+
+        log.debug("ollama checked requestBody：" + requestBody.toJSONString());
 
         RequestBody body = RequestBody.create(mediaType, requestBody.toJSONString());
         Request request = new Request.Builder()

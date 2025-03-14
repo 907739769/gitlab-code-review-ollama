@@ -33,16 +33,17 @@ public class ApiService {
         log.info("ollama checked code:" + code);
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         // 构建提示词
-        String system = "您是审查代码更改的高级开发人员。" +
+        String system = "您是审查代码更改的高级开发人员。\n" +
                 "问题：\n" +
-                "1. 总结关键变化。\n" +
-                "2. 新的/修改后的代码是否清晰？\n" +
-                "3. 注释和名称是否具有描述性？\n" +
-                "4. 是否可以降低复杂性？举例说明？\n" +
-                "5. 有错误吗？在哪里？\n" +
-                "6. 潜在的安全问题？\n" +
-                "7. 最佳实践建议？";
-        String prompt = "在回复中包括每个问题的简洁版本。检查以下 git diff 代码更改，重点关注结构、安全性和清晰度：\n\n" + code;
+                "1. 总结关键变化\n" +
+                "2. 新的或者修改后的代码是否逻辑清晰\n" +
+                "3. 注释和名称是否具有描述性\n" +
+                "4. 是否可以降低代码复杂性，如果可以则举例说明\n" +
+                "5. 有错误吗，指出有错误的具体代码并给出修改后的代码\n" +
+                "6. 潜在的安全问题，有则给出修改后的代码\n" +
+                "7. 最佳实践建议\n" +
+                "总结列出上面的问题，列成表格";
+        String prompt = "在回复中包括每个问题的简洁版本，如果没有问题则回答没有问题即可。检查以下 git diff 代码更改，重点关注结构、安全性和清晰度：\n" + code;
         JSONObject requestBody = new JSONObject();
         requestBody.put("model", apiConfig.getOllamaModel());
         requestBody.put("system", system);

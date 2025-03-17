@@ -115,12 +115,15 @@ public class ApiService {
                 JSONObject change = (JSONObject) changeObj;
                 String filePath = change.getString("new_path");
                 String diffContent = change.getString("diff");
-
-                // 对每个文件的 diff 内容进行检查
-                JSONObject checkResult = checkCodeWithOllama(diffContent);
-                String result = checkResult.getString("response");
-                String comment = "## Check result for file " + filePath + "\n" + result;
-
+                String comment;
+                if (StringUtils.hasText(diffContent)) {
+                    // 对每个文件的 diff 内容进行检查
+                    JSONObject checkResult = checkCodeWithOllama(diffContent);
+                    String result = checkResult.getString("response");
+                    comment = "## Check result for file " + filePath + "\n" + result;
+                } else {
+                    comment = "## Check result for file " + filePath + "\n" + "no change";
+                }
                 // 添加评论到 PR
                 addCommentToPr(projectId, prId, comment);
             }

@@ -42,12 +42,11 @@ public class ApiService {
                 "4. 是否可以降低代码复杂性，如果可以则举例说明\n" +
                 "5. 有错误吗，指出有错误的具体代码并给出修改后的代码\n" +
                 "6. 潜在的安全问题，有则给出修改后的代码\n" +
-                "7. 最佳实践建议\n" +
-                "总结列出上面的问题，列成表格";
+                "7. 最佳实践建议";
         if (StringUtils.hasText(apiConfig.getOllamaSystem())) {
             system = apiConfig.getOllamaSystem();
         }
-        String prompt = "在回复中包括每个问题的简洁版本，如果没有问题则回答没有问题即可。检查以下 git diff 代码更改，重点关注结构、安全性和清晰度。";
+        String prompt = "在回复中包括每个问题的简洁版本，检查以下 git diff 代码更改，重点关注结构、安全性和清晰度。";
         if (StringUtils.hasText(apiConfig.getOllamaPrompt())) {
             prompt = apiConfig.getOllamaPrompt();
         }

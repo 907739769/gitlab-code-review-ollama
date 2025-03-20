@@ -8,8 +8,8 @@
         <!--自定义一些常量，之后使用${变量名}引用-->
         <!-- 配置日志文件输出目录 -->
         <Property name="log_dir">/log</Property>
-<!--        <Property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}][%-5level][%.5thread][%logger{0}.%method:%line] %msg%n</Property>-->
-        <Property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}] %msg%n</Property>
+        <Property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}][%-5level][%.5thread][%logger{0}.%method:%line] %msg%n</Property>
+<!--        <Property name="log_pattern">[%d{yyyy-MM-dd HH:mm:ss:SSS}] %msg%n</Property>-->
     </properties>
 
     <!--Appenders: 定义输出内容,输出格式,输出方式,日志保存策略等,常用其下三种标签[console,File,RollingFile]-->

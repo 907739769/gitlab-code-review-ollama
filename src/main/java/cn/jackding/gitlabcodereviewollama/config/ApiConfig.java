@@ -25,4 +25,6 @@ public class ApiConfig {
     @Value("${apiOllamaPrompt:}")
     private String ollamaPrompt;
 
+    @Value("${apiOllamaOptions:}")
+    private String apiOllamaOptions;
 }

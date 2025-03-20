@@ -13,6 +13,7 @@ ENV apiOllamaUrl=""
 ENV apiOllamaModel=""
 ENV apiOllamaSystem=""
 ENV apiOllamaPrompt=""
+ENV apiOllamaOptions=""
 ENV PUID=0
 ENV PGID=0
 ENV UMASK=022

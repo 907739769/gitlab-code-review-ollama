@@ -34,19 +34,11 @@ public class ApiService {
         log.info("ollama checked code:" + code);
         MediaType mediaType = MediaType.get("application/json; charset=utf-8");
         // 构建提示词
-        String system = "您是审查代码更改的高级开发人员。\n" +
-                "问题：\n" +
-                "1. 总结关键变化\n" +
-                "2. 新的或者修改后的代码是否逻辑清晰\n" +
-                "3. 注释和名称是否具有描述性\n" +
-                "4. 是否可以降低代码复杂性，如果可以则举例说明\n" +
-                "5. 有错误吗，指出有错误的具体代码并给出修改后的代码\n" +
-                "6. 潜在的安全问题，有则给出修改后的代码\n" +
-                "7. 最佳实践建议";
+        String system = "你是审查代码更改的高级开发人员";
         if (StringUtils.hasText(apiConfig.getOllamaSystem())) {
             system = apiConfig.getOllamaSystem();
         }
-        String prompt = "在回复中包括每个问题的简洁版本，检查以下 git diff 代码更改，重点关注结构、安全性和清晰度。";
+        String prompt = "### 任务：\\n分析git diff代码片段以确定代码的质量。从总结代码变更、新的代码或者修改的代码逻辑错误、安全性问题、最佳实践建议四个方面分析给出结论。\\n\\n### 准则：\\n- 使用MarkDown**独家**响应。严禁任何形式的额外评论、解释或附加文本，要求回答言简意赅。\\n- 从总结代码变更、新的代码或者修改的代码逻辑错误、安全性问题、最佳实践建议四个方面分析给出结论\\n- 返回格式严格要求使用MarkDown\\n- 如果代码逻辑存在问题，则指出问题所在，并给出修改后的代码\\n- 如果存在安全问题，则指出问题所在，并给出修改后的代码\\n\\n### 输出：\\n严格以 MarkDown 格式返回：\\n- [x] 代码变更总结：\\n- [x] 代码逻辑：\\n- [x] 安全问题：\\n- [x] 建议：\\n\\n### git diff 代码片段：\\n";
         if (StringUtils.hasText(apiConfig.getOllamaPrompt())) {
             prompt = apiConfig.getOllamaPrompt();
         }
@@ -55,8 +47,17 @@ public class ApiService {
         requestBody.put("system", system);
         requestBody.put("prompt", prompt + "\n" + code);
         requestBody.put("stream", false);
+        //补充参数
+        JSONObject options = new JSONObject();
+        if(StringUtils.hasText(apiConfig.getApiOllamaOptions())){
+            options=JSONObject.parseObject(apiConfig.getApiOllamaOptions());
+        }else {
+            options.put("temperature",0.6);
 
-        log.debug("ollama checked requestBody：" + requestBody.toJSONString());
+        }
+        requestBody.put("options", options);
+
+        log.info("ollama checked requestBody：" + requestBody.toJSONString());
 
         RequestBody body = RequestBody.create(mediaType, requestBody.toJSONString());
         Request request = new Request.Builder()
@@ -68,7 +69,7 @@ public class ApiService {
             if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
 
             String responseBody = response.body().string();
-            log.debug("ollama responseBody: " + responseBody);
+            log.info("ollama responseBody: " + responseBody);
             return JSON.parseObject(responseBody);
         }
     }

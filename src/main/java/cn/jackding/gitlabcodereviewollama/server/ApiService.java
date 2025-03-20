@@ -52,8 +52,8 @@ public class ApiService {
         if(StringUtils.hasText(apiConfig.getApiOllamaOptions())){
             options=JSONObject.parseObject(apiConfig.getApiOllamaOptions());
         }else {
-            options.put("temperature",0.6);
-
+            options.put("temperature",0.7);
+            options.put("num_ctx",8192);
         }
         requestBody.put("options", options);
 
@@ -95,7 +95,7 @@ public class ApiService {
 
     public JSONObject getPrChanges(String projectId, String prId) throws IOException {
         Request request = new Request.Builder()
-                .url(apiConfig.getGitlabUrl() + "/projects/" + projectId + "/merge_requests/" + prId + "/changes")
+                .url(apiConfig.getGitlabUrl() + "/projects/" + projectId + "/merge_requests/" + prId + "/changes?access_raw_diffs=true")
                 .header("Private-Token", apiConfig.getGitlabToken())
                 .build();
 

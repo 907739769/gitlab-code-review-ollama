@@ -47,6 +47,7 @@ public class ApiService {
         requestBody.put("system", system);
         requestBody.put("prompt", prompt + "\n" + code);
         requestBody.put("stream", false);
+        requestBody.put("think", false);
         //补充参数
         JSONObject options = new JSONObject();
         if(StringUtils.hasText(apiConfig.getApiOllamaOptions())){

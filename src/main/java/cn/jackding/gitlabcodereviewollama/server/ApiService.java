@@ -25,8 +25,8 @@ public class ApiService {
     public ApiService() {
         this.client = new OkHttpClient.Builder()
                 .connectTimeout(30, TimeUnit.SECONDS)
-                .readTimeout(300, TimeUnit.SECONDS)
-                .writeTimeout(300, TimeUnit.SECONDS)
+                .readTimeout(1800, TimeUnit.SECONDS)
+                .writeTimeout(1800, TimeUnit.SECONDS)
                 .build();
     }
 

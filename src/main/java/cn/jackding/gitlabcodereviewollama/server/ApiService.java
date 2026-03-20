@@ -47,16 +47,12 @@ public class ApiService {
         requestBody.put("system", system);
         requestBody.put("prompt", prompt + "\n" + code);
         requestBody.put("stream", false);
-        requestBody.put("think", false);
         //补充参数
         JSONObject options = new JSONObject();
         if(StringUtils.hasText(apiConfig.getApiOllamaOptions())){
             options=JSONObject.parseObject(apiConfig.getApiOllamaOptions());
-        }else {
-            options.put("temperature",0.7);
-            options.put("num_ctx",8192);
+            requestBody.put("options", options);
         }
-        requestBody.put("options", options);
 
         log.info("ollama checked requestBody：" + requestBody.toJSONString());
 
